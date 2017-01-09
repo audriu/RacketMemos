@@ -24,8 +24,6 @@
   (if (null? rlist)(aunit)
       (apair (car rlist)(racketlist->mupllist (cdr rlist)))))
 
-;; CHANGE (put your solutions here)
-
 (define (mupllist->racketlist mlist)
   (if (aunit? mlist) null
      (cons (apair-e1 mlist)(mupllist->racketlist (apair-e2 mlist)))))
@@ -58,6 +56,12 @@
                          (if (< v1 v2)
                              (ifgreater-e3 e)
                              (ifgreater-e4 e)))]
+        [(var? e)((envlookup env e))]
+        [(add? e)(let ([v1 (int-num(eval-under-env(add-e1 e) env))]
+                       [v2 (int-num(eval-under-env(add-e2 e) env))])
+                   (if (< v1 v2)
+                       (ifgreater-e3 e)
+                       (ifgreater-e4 e)))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
