@@ -62,6 +62,9 @@
                    (if (< v1 v2)
                        (ifgreater-e3 e)
                        (ifgreater-e4 e)))]
+        [(mlet? e)
+         (let ([uenv (cons (cons (mlet-var e)(mlet-e e)) env)])
+           (eval-under-env (mlet-body e) uenv))]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
