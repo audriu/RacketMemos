@@ -1,19 +1,15 @@
 #lang racket
-;(require 2htdp/batch-io)
+(provide (all-defined-out))
 
 (struct weather (name perspective temperature humidity wind class) #:transparent)
 
 ;;Exercise 8
+;;Todo implement
 #;(define (read-examples file-name)
   (file->lines file-name))
 
+;;todo uncomment
 #;(define examples (read-examples "examples.txt"))
-
-(define examples (list (weather "Day1" 'cloudy -5 60 'yes '-)
-                       (weather "Day2" 'cloudy 0 30 'no '+)
-                       (weather "Day3" 'cloudy 10 45 'no '+)
-                       (weather "Day4" 'cloudy 20 60 'yes '-)
-                       (weather "Day5" 'cloudy 30 80 'no '+)))
 
 ;;Exercise 9
 (define (add-example examples example)
