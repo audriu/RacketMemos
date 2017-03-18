@@ -12,3 +12,7 @@
 (define expected-result (cons argument-for-add-example examples))
 (check-equal? (add-example examples argument-for-add-example) expected-result "addind to list is not working?")
 
+;;tests for Exercise 10
+(check-equal? (attribute 'wind examples) '(yes no no yes no) "")
+(check-equal? (attribute 'name examples) '("Day1" "Day2" "Day3" "Day4" "Day5") "")
+(check-equal? (attribute 'class examples) '(- + + - +) "")

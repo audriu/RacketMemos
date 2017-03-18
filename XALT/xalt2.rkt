@@ -16,8 +16,8 @@
   (cons example examples))
 
 ;;Exercise 10
-(define (attribute whitch examples)
-  (define command (eval (string->symbol(string-append "weather-" whitch))))
+(define (attribute which examples)
+  (define command (eval (string->symbol(string-append "weather-" (symbol->string which)))))
   (if (null? examples) null
-      (cons (command (car examples)) (attribute whitch (cdr examples)))))
+      (cons (command (car examples)) (attribute which (cdr examples)))))
 
