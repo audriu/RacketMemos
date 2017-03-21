@@ -15,9 +15,19 @@
 (define (add-example examples example)
   (cons example examples))
 
+;; get-attribute-function : Symbol -> (Weather -> Any)
+;; http://stackoverflow.com/questions/42875234/racket-strange-require-semantics
+(define (get-attribute attr)
+  (case attr
+    [(name) weather-name]
+    [(perspective) weather-perspective]
+    [(temperature) weather-temperature]
+    [(humidity) weather-humidity]
+    [(wind) weather-wind]
+    [(class) weather-class]))
+
 ;;Exercise 10
 (define (attribute which examples)
-  (define command (eval (string->symbol(string-append "weather-" (symbol->string which)))))
+  (define command (get-attribute which))
   (if (null? examples) null
       (cons (command (car examples)) (attribute which (cdr examples)))))
-
