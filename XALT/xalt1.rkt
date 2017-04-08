@@ -2,10 +2,7 @@
 (provide (all-defined-out))
 
 ;;5th exercise
-(define (get-randomly5 ls)(car(shuffle ls)))
-
-;;6th exercise
-(define (get-randomly6 ls)
+(define (get-randomly5 ls)
 
   ;function that gets all the probability sums of the list
   (define (sum-weights l)
@@ -25,3 +22,13 @@
   ;call that function.
   (get-from-list-by-weight ls 0)
 )
+
+;list transformation for the 6th exercise
+(define (transform-6th l)
+    (cond [(null? l)null]
+          [(pair? (car l))(cons (car l)(transform-6th (cdr l)))]
+          [else (cons (cons(car l)1)(transform-6th (cdr l)))]))
+
+;;6th exercise
+(define (get-randomly6 ls)
+  (get-randomly5(transform-6th ls)))

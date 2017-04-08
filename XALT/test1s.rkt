@@ -22,11 +22,8 @@
 ;If they are not conses then the list will be transformed into a list of conses where the cdr will be the same (showing they will have the same relative frequency),
 ;the easiest way will be to set the cdr to “1”.
 
-;list transformation for the 6th exercise
-(define (transform-6th l)
-    (cond [(null? l)null]
-          [(pair? (car l))(cons (car l)(transform-6th (cdr l)))]
-          [else (cons (cons(car l)1)(transform-6th (cdr l)))]))
+(get-randomly6 test-list-1)
+(get-randomly6 '(1 2 3))
 
 ;data for testing
 ;Also applying normalisation for the 6th excercise.
@@ -39,7 +36,7 @@
 (define ok (do ((x 6000 (- x 1)))
              ((= x 0) elements)
              (set! elements
-                   (cons (get-randomly6
+                   (cons (get-randomly5
                           three-elements)
                          elements
                          ))))
