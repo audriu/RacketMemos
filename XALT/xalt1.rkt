@@ -1,8 +1,11 @@
 #lang racket
-(require rackunit)
+(provide (all-defined-out))
 
 ;;5th exercise
-(define (get-randomly ls)
+(define (get-randomly5 ls)(car(shuffle ls)))
+
+;;6th exercise
+(define (get-randomly6 ls)
 
   ;function that gets all the probability sums of the list
   (define (sum-weights l)
@@ -22,30 +25,3 @@
   ;call that function.
   (get-from-list-by-weight ls 0)
 )
-
-;list transformation for the 6th exercise
-(define (transform-6th l)
-    (cond [(null? l)null]
-          [(pair? (car l))(cons (car l)(transform-6th (cdr l)))]
-          [else (cons (cons(car l)1)(transform-6th (cdr l)))]))
-
-;data for testing
-;Also applying normalisation for the 6th excercise.
-(define three-elements (transform-6th(list 'a(cons 'b 2)'c)))
-
-;;empty initial list for random generation.
-(define elements '())
-
-;;generating 6000 random elements list
-(define ok (do ((x 6000 (- x 1)))
-             ((= x 0) elements)
-             (set! elements
-                   (cons (get-randomly
-                          three-elements)
-                         elements
-                         ))))
-
-;;counting all the elements in the list
-(map (lambda(x)
-       (cons x (count (lambda(y) (eq? x y)) elements)))
-     three-elements)

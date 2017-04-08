@@ -18,6 +18,7 @@
 ;; get-attribute-function : Symbol -> (Weather -> Any)
 ;; http://stackoverflow.com/questions/42875234/racket-strange-require-semantics
 (define (get-attribute attr)
+  ;;https://docs.racket-lang.org/reference/case.html
   (case attr
     [(name) weather-name]
     [(perspective) weather-perspective]
