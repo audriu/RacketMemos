@@ -4,9 +4,20 @@
 
 (struct weather (name perspective temperature humidity wind class) #:transparent)
 
+;;auxiliary function for converting string to "weather struct"
+(define (string->weather str)
+  (define words(regexp-split " " str))
+  (weather
+   (list-ref words 0)
+   (string->symbol(list-ref words 1))
+   (string->number(list-ref words 2))
+   (string->number(list-ref words 3))
+   (string->symbol(list-ref words 4))
+   (string->symbol(list-ref words 5))))
+
 ;;Exercise 8
 (define (read-examples file-name)
-  (filter (lambda (str)(not(string-prefix? str "#")))(file->lines file-name)))
+  (map string->weather (filter (lambda (str)(not(string-prefix? str "#")))(file->lines file-name))))
 
 (define examples (read-examples "examples.txt"))
 
