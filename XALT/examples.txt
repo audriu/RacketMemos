@@ -1,0 +1,28 @@
+#---DESCRIPTION OF ATRIBUTTES---
+#Perspective: 		Nominal		Values: cloudy, sun, rain, snow
+#Temperature:		Numeric		Values: between -50 y +50ºC
+#Humidity:		Numeric		Values: between 0 and 100%
+#Windy:			Nominal		Values: yes, no
+#
+#---TRAINING SET---
+#Day Perspective Temperature Humidity Windy Class
+Day1 cloudy -5 60 yes -
+Day2 cloudy 0 30 no +
+Day3 cloudy 10 45 no +
+Day4 cloudy 20 60 yes -
+Day5 cloudy 30 80 no +
+Day6 sun -5 50 no +
+Day7 sun 0 20 no +
+Day8 sun 10 45 yes -
+Day9 sun 20 60 no +
+Day10 sun 30 80 no -
+Day11 rain 5 80 no -
+Day12 rain 10 90 no -
+Day13 rain 20 90 yes -
+Day14 rain 30 95 no +
+Day15 rain 40 99 no +
+Day16 snow -10 20 no -
+Day17 snow -5 35 yes -
+Day18 snow 0 25 no +
+Day19 snow 5 35 yes -
+Day20 snow 10 35 no +

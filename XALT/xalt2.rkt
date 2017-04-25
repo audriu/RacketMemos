@@ -1,15 +1,14 @@
 #lang racket
 (provide (all-defined-out))
+(require (planet williams/describe/describe))
 
 (struct weather (name perspective temperature humidity wind class) #:transparent)
 
 ;;Exercise 8
-;;Todo implement
-#;(define (read-examples file-name)
-  (file->lines file-name))
+(define (read-examples file-name)
+  (filter (lambda (str)(not(string-prefix? str "#")))(file->lines file-name)))
 
-;;todo uncomment
-#;(define examples (read-examples "examples.txt"))
+(define examples (read-examples "examples.txt"))
 
 ;;Exercise 9
 (define (add-example examples example)
@@ -32,3 +31,26 @@
   (define command (get-attribute which))
   (if (null? examples) null
       (cons (command (car examples)) (attribute which (cdr examples)))))
+
+;;Exercise 11
+(define (mix list1 list2)
+  ;;mixes 2 lists assumuming equal sizes.
+  (define (get-randomly x y)
+    (if (= 1 (random 2)) x y))
+  (if (empty? list1)null
+      (cons (get-randomly(car list1)(car list2)) (mix (cdr list1)(cdr list2)))))
+
+;;Exercise 12
+(define (separate rate list)
+  (define num-needed (exact-round(* rate(length list))))
+  (take list num-needed))
+
+;;Exercise 13
+(define (folds num arg)
+  (if (empty? arg) null
+      (if (> num (length arg)) (list arg)
+          (cons (take arg num)(folds num (drop arg num))))))
+
+;;Exercise 14
+;todo write tests
+(define stratify folds)
