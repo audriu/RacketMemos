@@ -2,18 +2,16 @@
 
 (provide (all-defined-out)) ;; so we can put tests in a second file
 
-;; put your code below
-
 (define (sequence low high stride)
   (if (<= low high)
       (cons low (sequence (+ low stride) high stride))
       null))
 
 (define (string-append-map xs suffix)
-  (map (lambda (x)(string-append x suffix)) xs))
+  (map (λ (xs)(string-append xs suffix)) mp))
 
 (define (list-nth-mod xs n)
-  (cond [(= n 0)(error "list-nth-mod: negative number")]
+  (cond [(< n 0)(error "list-nth-mod: negative number")]
         [(null? xs)(error "list-nth-mod: empty list")]
         [else (let([i (remainder n (length xs))])
                 (define (get-ith ls ith)
@@ -25,31 +23,33 @@
 (define (stream-for-n-steps s n)
   (if (= 0 n)
       null
-      (let ([res (s)])(cons (car res) (stream-for-n-steps (cdr res)(- n 1))))))
+      (cons (car (s))
+            (stream-for-n-steps (cdr (s)) (- n 1)))))
 
 (define (funny-number-stream)
   (define (stream x)(cons (if [= (remainder x 5) 0](* x -1)x) (lambda ()(stream (+ x 1)))))
   (stream 1))
 
 (define (dan-then-dog)
-  (define (stream x)(cons x (lambda ()(stream (if (string=? x "dog.jpg")"dan.jpg" "dog.jpg")))))
-  (stream "dan.jpg"))
+  (define (dan)(cons "dan.jpg" dog))
+  (define (dog)(cons "dog.jpg" dan))
+  (dan))
 
 (define (stream-add-zero s)
-  (define (wrap stream)
-    (lambda () (cons (cons 0(car (s)))(wrap (s)))))
-  (wrap s))
+  (define (wr s)
+    (cons (cons 0 (car (s))) (lambda ()(wr (cdr(s))))))
+  (lambda () (wr s)))
 
-(define (cycle-lists l1 l2)
-  (define (stream x1 x2)
-    (define list1 (if (null? x1)l1 x1))
-    (define list2 (if (null? x2)l2 x2))
-    (cons (cons (car list1)(car list2)) (lambda ()(stream (cdr list1) (cdr list2)))))
-  (lambda()(stream l1 l2)))
+(define (cycle-lists xs ys)
+  (define (aux x)(cons (cons (list-nth-mod xs x)(list-nth-mod ys x))(lambda ()(aux (+ 1 x)))))
+  (lambda ()(aux 0)))
 
-(define-syntax while-less
-  (syntax-rules ()
-    [(while-less e1 do e2) (let ([my-e1 e1])
-                             (define (inner-loop)(begin (define my-e2 e2)(if (< my-e1 my-e2)(inner-loop)#t)))
-                             (inner-loop)
-                             )]))
+(define (vector-assoc var vec)
+  (define len (vector-length vec))
+  (define (traverse pos)
+    (if (> pos len)
+        #f
+        (if (= var (car(vector-ref vec pos)))
+            (vector-ref vec pos)
+            (traverse (+ 1 pos)))))
+  (traverse 0))
