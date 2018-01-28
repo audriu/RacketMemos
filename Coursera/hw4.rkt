@@ -53,3 +53,13 @@
             (vector-ref vec pos)
             (traverse (+ 1 pos)))))
   (traverse 0))
+
+(define-syntax while-less
+  (syntax-rules (do)
+    [(while-less e1 do e2)
+     (let ([f1 e1])
+       (define (lop)
+         (if (>= f1 e2)
+             (lop)
+             #t))
+       (lop))]))
