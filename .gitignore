@@ -1,2 +1,9 @@
+# Emacs / DrRacket backups & auto save files
 *~
+\#*\#
+.\#*
+
+# Emacs tags
+TAGS
+
 compiled/

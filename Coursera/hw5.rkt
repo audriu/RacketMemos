@@ -20,13 +20,15 @@
 ;; a closure is not in "source" programs but /is/ a MUPL value; it is what functions evaluate to
 (struct closure (env fun) #:transparent) 
 
-(define (racketlist->mupllist rlist)
-  (if (null? rlist)(aunit)
-      (apair (car rlist)(racketlist->mupllist (cdr rlist)))))
+(define (racketlist->mupllist rl)
+  (if (null? rl)
+      (aunit)
+      (apair (car rl)(racketlist->mupllist (cdr rl)))))
 
-(define (mupllist->racketlist mlist)
-  (if (aunit? mlist) null
-     (cons (apair-e1 mlist)(mupllist->racketlist (apair-e2 mlist)))))
+(define (mupllist->racketlist ml)
+  (if (aunit? ml)
+      null
+      (cons (apair-e1 ml) (mupllist->racketlist (apair-e2 ml)))))
 
 ;; lookup a variable in an environment
 ;; Do NOT change this function
@@ -40,10 +42,10 @@
 ;; We will test eval-under-env by calling it directly even though
 ;; "in real life" it would be a helper function of eval-exp.
 (define (eval-under-env e env)
-  (cond [(var? e) 
+  (cond [(var? e)
          (envlookup env (var-string e))]
-        [(int? e)e]
-        [(add? e) 
+        [(int? e) e]
+        [(add? e)
          (let ([v1 (eval-under-env (add-e1 e) env)]
                [v2 (eval-under-env (add-e2 e) env)])
            (if (and (int? v1)
@@ -51,20 +53,37 @@
                (int (+ (int-num v1) 
                        (int-num v2)))
                (error "MUPL addition applied to non-number")))]
-        [(ifgreater? e)(let ([v1 (int-num(eval-under-env(ifgreater-e1 e) env))]
-                             [v2 (int-num(eval-under-env(ifgreater-e2 e) env))])
-                         (if (< v1 v2)
-                             (ifgreater-e3 e)
-                             (ifgreater-e4 e)))]
-        [(var? e)((envlookup env e))]
-        [(add? e)(let ([v1 (int-num(eval-under-env(add-e1 e) env))]
-                       [v2 (int-num(eval-under-env(add-e2 e) env))])
-                   (if (< v1 v2)
-                       (ifgreater-e3 e)
-                       (ifgreater-e4 e)))]
+        [(ifgreater? e)
+         (let ([v1 (int-num(eval-under-env (ifgreater-e1 e) env))]
+               [v2 (int-num(eval-under-env (ifgreater-e2 e) env))])
+           (if (> v1 v2)
+               (eval-under-env (ifgreater-e3 e) env)
+               (eval-under-env (ifgreater-e4 e) env)))]
+        [(fun? e)
+         "todo"]
+        [(call? e)
+         (let ([funexp (call-funexp e)]
+               [actual (call-actual e)])
+           (if (clojure? funexp)
+               "todo"
+               (error "not a clojure")))]
         [(mlet? e)
-         (let ([uenv (cons (cons (mlet-var e)(mlet-e e)) env)])
-           (eval-under-env (mlet-body e) uenv))]
+         (let ([var- (mlet-var e)]
+               [e- (eval-under-env (mlet-body e) env)])
+           (eval-under-env (mlet-body e) (cons (cons var- e-)env)))]
+        [(apair? e)
+         (let ([v1 (eval-under-env (apair-e1 e) env)]
+               [v2 (eval-under-env (apair-e2 e) env)])
+           (apair v1 v2))]
+        [(fst? e)
+         (apair-e1 (fst-e e))]
+        [(snd? e)
+         (apair-e2 (snd-e e))]
+        [(isaunit? e)
+         (if (aunit? e)
+             (int 1)
+             (int 0))]
+        [(closure? e) e]
         [#t (error (format "bad MUPL expression: ~v" e))]))
 
 ;; Do NOT change
