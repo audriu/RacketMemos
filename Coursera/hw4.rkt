@@ -8,7 +8,7 @@
       null))
 
 (define (string-append-map xs suffix)
-  (map (λ (xs)(string-append xs suffix)) mp))
+  (map (λ (xs)(string-append xs suffix)) map))
 
 (define (list-nth-mod xs n)
   (cond [(< n 0)(error "list-nth-mod: negative number")]
